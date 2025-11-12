@@ -72,7 +72,45 @@ class DatabaseRoute {
         count: sensors.length,
       });
     } catch (error) {
-      console.error("Error in getSensorMeasurements:", error);
+      console.error("Error in getAllOrganizationSensors:", error);
+      response.status(404).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  }
+
+  async updateSensor(request, response) {
+    try {
+      const { id } = request.params;
+      const updateData = request.body;
+
+      const sensor = await SensorService.updateSensor(id, updateData);
+
+      response.status(200).json({
+        success: true,
+        data: sensor,
+      });
+    } catch (error) {
+      console.error("Error in updateSensor:", error);
+      response.status(404).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  }
+
+  async deleteSensor(request, response) {
+    try {
+      const { id } = request.params;
+
+      await SensorService.deleteSensor(id);
+
+      response.status(200).json({
+        success: true,
+      });
+    } catch (error) {
+      console.error("Error in deleteSensor:", error);
       response.status(404).json({
         success: false,
         error: error.message,

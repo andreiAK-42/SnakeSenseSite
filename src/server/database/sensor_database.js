@@ -107,14 +107,51 @@ class SensorService {
 
   async getAllOrganizationSensors(organizationId) {
     try {
+      await this.connect();
       const sonsors = await Sensor.find({
-        organization: new mongoose.Schema.Types.ObjectId(organizationId),
+        organization: new mongoose.Types.ObjectId(organizationId),
       });
 
       return sonsors;
     } catch (error) {
-      console.error("❌ Error in findSensorByIdAndPassword:", error);
+      console.error("❌ Error in getAllOrganizationSensors:", error);
       throw new Error(`Ошибка поиска датчика: ${error.message}`);
+    }
+  }
+
+  async updateSensor(sensorId, updateData) {
+    try {
+      await this.connect();
+      const sensor = await Sensor.findByIdAndUpdate(
+        sensorId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+      );
+
+      if (!sensor) {
+        throw new Error("Датчик не найден");
+      }
+
+      return sensor;
+    } catch (error) {
+      console.error("❌ Error in updateSensor:", error);
+      throw new Error(`Ошибка обновления датчика: ${error.message}`);
+    }
+  }
+
+  async deleteSensor(sensorId) {
+    try {
+      await this.connect();
+      const sensor = await Sensor.findByIdAndDelete(sensorId);
+
+      if (!sensor) {
+        throw new Error("Датчик не найден");
+      }
+
+      return sensor;
+    } catch (error) {
+      console.error("❌ Error in deleteSensor:", error);
+      throw new Error(`Ошибка удаления датчика: ${error.message}`);
     }
   }
 }
