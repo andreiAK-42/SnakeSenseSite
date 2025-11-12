@@ -1,0 +1,134 @@
+@media (min-width: 1025px) {
+    .body-container {
+        background-color: #141316;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        font-size: 16px;
+    }
+
+    h1, p {
+        margin: 0;
+    }
+
+
+    .dashboard {
+        width: 100%;
+        height: 100%;
+        display: flex;
+    }
+
+    /*Панель. Левая часть*/
+
+    .left-container {
+        margin-left: 2%;
+        width: 70%;
+        height: 100%;
+    }
+
+    .right-container {
+        width: 30%;
+        height: 100%;
+    }
+
+    .left-container h1 {
+        font-size: 32px;
+        font-family: 'Ubuntu';
+        font-weight: 100;
+        color: white;
+        text-align: start;
+    }
+
+    .left-container p {
+        font-size: 24px;
+        font-family: 'Ubuntu';
+        font-weight: 100;
+        color: white;
+        text-align: start;
+    }
+
+    /*Карточки текущих параметров датчика*/
+
+    .current-parameters-container {
+        width: 100%;
+        height: 182px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .current-parameters-container p {
+        margin: 0;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .card-icon-and-parameter {
+        display: flex;
+        align-items: start;
+        width: 100%;
+    }
+
+    .card-icon-and-parameter p {
+        font-size: 28px;
+    }
+
+    .current-parameter-card {
+        width: 177px;
+        height: 155px;
+        background-color: #b89432;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 20px;
+    }
+
+    /*Графики*/
+
+
+    /*Правый контейнер*/
+
+    .right-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sensor-list-container {
+        margin-top: 20px;
+        width: 90%;
+        height: 33%;
+        border: 1px solid #ddd;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 4px;
+    }
+
+    .sensor-card-container {
+        width: 90%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 40px;
+
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .sensor-card-container img {
+        width: 30px;
+        height: 30px;
+        margin: 10px;
+    }
+
+    .report-list-container {
+        margin-top: 22%;
+        width: 90%;
+        height: 50%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+}

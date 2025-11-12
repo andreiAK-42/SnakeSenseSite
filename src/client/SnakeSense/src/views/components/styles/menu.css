@@ -1,0 +1,60 @@
+.menu {
+  min-width: 260px;
+  width: 16%;
+  height: 100%;
+  background-color: #1e1e20;
+}
+
+.logo-container {
+  margin-top: 10px;
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.logo-container P {
+  margin-left: 10px;
+  font-size: 24px;
+  font-family: "Ubuntu";
+  font-weight: 100;
+  color: white;
+}
+
+.points-container {
+  height: 60px;
+  width: 248px;
+  margin-top: 40px;
+  margin-left: 10px;
+  margin-right: 10px;
+  display: grid;
+  gap: 20px;
+}
+
+.point.active {
+  background-color: #4e4b4b;
+}
+
+.point {
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.point:hover {
+  background-color: #4e4b4b;
+  cursor: pointer;
+}
+
+.point img {
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+}
+
+.point p {
+  margin-left: 10px;
+  font-size: 24px;
+  font-family: "Ubuntu";
+  font-weight: 100;
+  color: white;
+}
