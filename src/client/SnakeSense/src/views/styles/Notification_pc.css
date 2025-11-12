@@ -1,0 +1,12 @@
+.notification-container {
+  padding: 20px;
+}
+
+.notification-container h1 {
+  margin-bottom: 20px;
+}
+
+.notification-container p {
+  color: #666;
+}
+
