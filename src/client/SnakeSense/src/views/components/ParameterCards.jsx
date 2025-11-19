@@ -17,7 +17,7 @@ const ParameterCards = ({ sensorData }) => {
       temperature: latestData.data.dht_temperature,
       humidity: latestData.data.dht_humidity,
       pressure: Math.round(latestData.data.bmp_pressure / 133.3),
-      ppm: Math.round(latestData.data.mq_bad_data)
+      ppm: latestData.data.mq_au
     };
   };
 

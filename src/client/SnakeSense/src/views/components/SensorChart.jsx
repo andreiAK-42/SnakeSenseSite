@@ -40,7 +40,7 @@ const SensorChart = ({
       },
       bad_ppm: {
         label: "Концентрация газов - аналог (ppm)",
-        data: sortedData.map((item) => item.data.mq_bad_data),
+        data: sortedData.map((item) => item.data.mq_au),
         color: "rgb(153, 102, 255)",
         backgroundColor: "rgba(153, 102, 255, 0.2)",
       },
@@ -157,7 +157,7 @@ const SensorChart = ({
     <div className="sensor-graph-container">
       {loading && <p>Загрузка данных...</p>}
       {error && (
-        <p style={{ color: "red" }}>{"Ошибка загрузки данных " + error}</p>
+        <p style={{ color: "red", position: "absolute" }}>{"Ошибка загрузки данных " + error}</p>
       )}
 
       <div className="sensor-graph">

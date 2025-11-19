@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import './styles/Sensors_pc.css';
-import NavigationBar from './components/NavigationBar.jsx';
+import React, { useEffect, useState } from "react";
+import "./styles/Sensors_pc.css";
+import NavigationBar from "./components/NavigationBar.jsx";
 
 function Sensors() {
   const [sensors, setSensors] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [selectedSensor, setSelectedSensor] = useState(null);
@@ -15,31 +15,30 @@ function Sensors() {
     bmp_pressure_add: 0,
     mq_ppm_add: 0,
     bmp_temperature_add: 0,
+    place: "None"
   });
 
-  // Загрузка датчиков с сервера
   const fetchSensors = async () => {
     try {
       setLoading(true);
-      setError('');
-      // TODO: Заменить на реальный organizationId из контекста/состояния
-      const organizationId = '65f8a1b2c3d4e5f6a7b8c9d0'; // Временное значение
+      setError("");
+      const organizationId = "690181989755625641265a4f";
       const url = `http://127.0.0.1:3007/api/v1/sensors?organizationId=${organizationId}`;
       const response = await fetch(url);
 
       if (!response.ok) {
-        throw new Error('Ошибка при получении данных');
+        throw new Error("Ошибка при получении данных");
       }
 
       const result = await response.json();
       if (result.success) {
         setSensors(result.data || []);
       } else {
-        throw new Error(result.error || 'Ошибка в данных сервера');
+        throw new Error(result.error || "Ошибка в данных сервера");
       }
     } catch (err) {
-      setError('Не удалось загрузить список датчиков');
-      console.error('Ошибка:', err);
+      setError("Не удалось загрузить список датчиков");
+      console.error("Ошибка:", err);
     } finally {
       setLoading(false);
     }
@@ -49,37 +48,34 @@ function Sensors() {
     fetchSensors();
   }, []);
 
-  // Определение статуса датчика
   const getSensorStatus = (lastActivity) => {
-    if (!lastActivity) return { text: 'Неизвестно', class: 'status-unknown' };
-    
+    if (!lastActivity) return { text: "Неизвестно", class: "status-unknown" };
+
     const lastActivityDate = new Date(lastActivity);
     const now = new Date();
     const diffMinutes = (now - lastActivityDate) / (1000 * 60);
-    
+
     if (diffMinutes < 5) {
-      return { text: 'Онлайн', class: 'status-online' };
+      return { text: "Онлайн", class: "status-online" };
     } else if (diffMinutes < 60) {
-      return { text: 'Недавно', class: 'status-recent' };
+      return { text: "Недавно", class: "status-recent" };
     } else {
-      return { text: 'Оффлайн', class: 'status-offline' };
+      return { text: "Оффлайн", class: "status-offline" };
     }
   };
 
-  // Форматирование даты
   const formatDate = (dateString) => {
-    if (!dateString) return 'Никогда';
+    if (!dateString) return "Никогда";
     const date = new Date(dateString);
-    return date.toLocaleString('ru-RU', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+    return date.toLocaleString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
-  // Открытие диалога настроек
   const handleOpenSettings = (sensor) => {
     setSelectedSensor(sensor);
     setSettingsForm({
@@ -88,19 +84,19 @@ function Sensors() {
       bmp_pressure_add: sensor.settings?.bmp_pressure_add || 0,
       mq_ppm_add: sensor.settings?.mq_ppm_add || 0,
       bmp_temperature_add: sensor.settings?.bmp_temperature_add || 0,
+      place: sensor.settings?.place || 0,
     });
     setShowSettingsDialog(true);
   };
 
-  // Сохранение настроек
   const handleSaveSettings = async () => {
     try {
       const response = await fetch(
         `http://127.0.0.1:3007/api/v1/sensors/${selectedSensor._id}`,
         {
-          method: 'PUT',
+          method: "PUT",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             settings: settingsForm,
@@ -109,53 +105,51 @@ function Sensors() {
       );
 
       if (!response.ok) {
-        throw new Error('Ошибка при сохранении настроек');
+        throw new Error("Ошибка при сохранении настроек");
       }
 
       const result = await response.json();
       if (result.success) {
         setShowSettingsDialog(false);
-        fetchSensors(); // Обновляем список
+        fetchSensors();
       } else {
-        throw new Error(result.error || 'Ошибка сохранения');
+        throw new Error(result.error || "Ошибка сохранения");
       }
     } catch (err) {
-      alert('Не удалось сохранить настройки: ' + err.message);
-      console.error('Ошибка:', err);
+      alert("Не удалось сохранить настройки: " + err.message);
+      console.error("Ошибка:", err);
     }
   };
 
-  // Открытие диалога удаления
   const handleOpenDelete = (sensor) => {
     setSelectedSensor(sensor);
     setShowDeleteDialog(true);
   };
 
-  // Подтверждение удаления
   const handleConfirmDelete = async () => {
     try {
       const response = await fetch(
         `http://127.0.0.1:3007/api/v1/sensors/${selectedSensor._id}`,
         {
-          method: 'DELETE',
+          method: "DELETE",
         }
       );
 
       if (!response.ok) {
-        throw new Error('Ошибка при удалении датчика');
+        throw new Error("Ошибка при удалении датчика");
       }
 
       const result = await response.json();
       if (result.success) {
         setShowDeleteDialog(false);
         setSelectedSensor(null);
-        fetchSensors(); // Обновляем список
+        fetchSensors();
       } else {
-        throw new Error(result.error || 'Ошибка удаления');
+        throw new Error(result.error || "Ошибка удаления");
       }
     } catch (err) {
-      alert('Не удалось удалить датчик: ' + err.message);
-      console.error('Ошибка:', err);
+      alert("Не удалось удалить датчик: " + err.message);
+      console.error("Ошибка:", err);
     }
   };
 
@@ -175,7 +169,7 @@ function Sensors() {
       <NavigationBar />
       <div className="sensors-container">
         <h1>Датчики</h1>
-        
+
         {error && <p className="error-message">{error}</p>}
 
         <table className="sensors-table">
@@ -200,8 +194,8 @@ function Sensors() {
                 const status = getSensorStatus(sensor.last_activity);
                 return (
                   <tr key={sensor._id}>
-                    <td>{sensor.name || 'Без названия'}</td>
-                    <td>{sensor.place || 'Не указано'}</td>
+                    <td>{sensor.name || "Без названия"}</td>
+                    <td>{sensor.settings.place || "Не указано"}</td>
                     <td>
                       <span className={`status-badge ${status.class}`}>
                         {status.text}
@@ -229,10 +223,15 @@ function Sensors() {
           </tbody>
         </table>
 
-        {/* Диалог настроек */}
         {showSettingsDialog && selectedSensor && (
-          <div className="dialog-overlay" onClick={() => setShowSettingsDialog(false)}>
-            <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="dialog-overlay"
+            onClick={() => setShowSettingsDialog(false)}
+          >
+            <div
+              className="dialog-content"
+              onClick={(e) => e.stopPropagation()}
+            >
               <h2>Настройки датчика: {selectedSensor.name}</h2>
               <div className="settings-form">
                 <div className="form-group">
@@ -300,9 +299,25 @@ function Sensors() {
                     }
                   />
                 </div>
+                <div className="form-group">
+                  <label>Местоположение:</label>
+                  <input
+                    type="text"
+                    value={settingsForm.place}
+                    onChange={(e) =>
+                      setSettingsForm({
+                        ...settingsForm,
+                        palce: e.target.value || "None",
+                      })
+                    }
+                  />
+                </div>
               </div>
               <div className="dialog-buttons">
-                <button className="btn-cancel" onClick={() => setShowSettingsDialog(false)}>
+                <button
+                  className="btn-cancel"
+                  onClick={() => setShowSettingsDialog(false)}
+                >
                   Отмена
                 </button>
                 <button className="btn-save" onClick={handleSaveSettings}>
@@ -313,20 +328,32 @@ function Sensors() {
           </div>
         )}
 
-        {/* Диалог подтверждения удаления */}
         {showDeleteDialog && selectedSensor && (
-          <div className="dialog-overlay" onClick={() => setShowDeleteDialog(false)}>
-            <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="dialog-overlay"
+            onClick={() => setShowDeleteDialog(false)}
+          >
+            <div
+              className="dialog-content"
+              onClick={(e) => e.stopPropagation()}
+            >
               <h2>Подтверждение удаления</h2>
               <p>
-                Вы уверены, что хотите удалить датчик <strong>{selectedSensor.name}</strong>?
-                Это действие нельзя отменить.
+                Вы уверены, что хотите удалить датчик{" "}
+                <strong>{selectedSensor.name}</strong>? Это действие нельзя
+                отменить.
               </p>
               <div className="dialog-buttons">
-                <button className="btn-cancel" onClick={() => setShowDeleteDialog(false)}>
+                <button
+                  className="btn-cancel"
+                  onClick={() => setShowDeleteDialog(false)}
+                >
                   Отмена
                 </button>
-                <button className="btn-delete-confirm" onClick={handleConfirmDelete}>
+                <button
+                  className="btn-delete-confirm"
+                  onClick={handleConfirmDelete}
+                >
                   Удалить
                 </button>
               </div>

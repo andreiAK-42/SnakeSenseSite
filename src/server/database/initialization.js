@@ -16,7 +16,7 @@ class DatabaseInitializer {
 
       await mongoose.connect(MONGODB_URI);
 
-      console.log("✅ Connected to MongoDB");
+      console.log("✅ MongoDB");
 
       await this.clearDatabase();
     } catch (error) {
@@ -27,7 +27,7 @@ class DatabaseInitializer {
 
   async clearDatabase() {
     try {
-    console.log(Organization.find());
+      console.log(Organization.find());
       await Organization.deleteMany({});
       await Sensor.deleteMany({});
       await Measurement.deleteMany({});
@@ -42,7 +42,13 @@ class DatabaseInitializer {
       {
         name: "ФГБОУ ВО Кемеровский Государственный Университет",
         api_keys: ["uioi;lmnhy789iol", "2354trhgfvdsasdfsdvbnghjkyi"],
-        employees: ["ivanov@romashka.ru", "petrov@romashka.ru"],
+        employees: [
+          {
+            login: "test",
+            password: "test",
+            integrations: { telegram_id: 1429506743 },
+          },
+        ],
         phone: "+7 (495) 123-45-67",
         address: {
           city: "Кемерово",
@@ -77,13 +83,13 @@ class DatabaseInitializer {
         password: "56uyjhghg",
         organization: this.organizations[0]._id,
         name: "Вояджер 1",
-        place: "Комната 525",
         settings: {
           dht_temperature_add: 0,
           dht_humidity_add: 0,
           bmp_temperature_add: 0,
           bmp_pressure_add: 0,
           mq_ppm_add: 0,
+          place: "Комната 525",
         },
       },
     ];
@@ -99,8 +105,6 @@ class DatabaseInitializer {
       console.error("Error creating sensors:", error);
     }
   }
-
-
 
   async initialize() {
     console.log("🚀 Starting database initialization...");
@@ -119,7 +123,6 @@ class DatabaseInitializer {
   }
 }
 
-// Запуск инициализации
 if (require.main === module) {
   const initializer = new DatabaseInitializer();
   initializer.initialize().catch(console.error);

@@ -10,8 +10,7 @@ class DatabaseRoute {
         dht_humidity,
         bmp_pressure,
         bmp_temperature,
-        mq_ppm,
-        mq_bad_data,
+        mq_au,
       } = request.body;
 
       await SensorService.addMeasurement(
@@ -21,8 +20,7 @@ class DatabaseRoute {
         dht_humidity,
         bmp_temperature,
         bmp_pressure,
-        mq_ppm,
-        mq_bad_data
+        mq_au
       );
       response.status(200).end();
     } catch {

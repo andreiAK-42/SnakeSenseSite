@@ -6,6 +6,7 @@ const settingsSchema = new mongoose.Schema({
   bmp_pressure_add: { type: Number, default: 0 },
   mq_ppm_add: { type: Number, default: 0 },
   bmp_temperature_add: { type: Number, default: 0 },
+  place: { type: String, required: false },
 });
 
 const sensorSchema = new mongoose.Schema(
@@ -17,7 +18,6 @@ const sensorSchema = new mongoose.Schema(
       ref: "Organization",
       required: true,
     },
-    place: { type: String, required: false },
     name: { type: String, required: true },
     settings: { type: settingsSchema, default: {} },
     last_activity: { type: Date, default: Date.now },

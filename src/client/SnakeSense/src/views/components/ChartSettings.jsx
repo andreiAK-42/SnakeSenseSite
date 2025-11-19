@@ -17,7 +17,7 @@ const ChartSettings = ({
         <option value="temperature">Температура</option>
         <option value="pressure">Давление</option>
         <option value="humidity">Влажность</option>
-        <option value="bad_ppm">Концентрация газов (аналог)</option>
+        <option value="bad_ppm">Концентрация газов</option>
       </select>
 
       <input 
