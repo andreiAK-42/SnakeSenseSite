@@ -89,7 +89,7 @@ function Dashboard() {
   return (
     <>
       <div className="body-container">
-        <button class="menu-toggle">
+        <button className="menu-toggle">
           <img src="src/views/assets/images/Menu.png" alt="Меню" />
         </button>
         <NavigationBar isMenuOpen={isMenuOpen} />

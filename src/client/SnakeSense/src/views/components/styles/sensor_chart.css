@@ -1,49 +1,32 @@
+/* ========================================
+   БЛОК: Контейнер графика датчика
+   ======================================== */
 .sensor-graph-container {
   width: 90%;
   height: 50%;
-  border-color: white;
-  border: solid;
-  border-width: 1px;
+  border: 1px solid white;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+/* ========================================
+   БЛОК: Настройки графика
+   ======================================== */
 .sensor-graph-settings {
   width: 100%;
   display: flex;
-  margin-top: 10px;
-}
-
-.sensor-graph-settings select {
-  width: 40%;
-  height: 40px;
-}
-
-.sensor-graph-settings form {
-  width: 50%;
-  height: 10%;
-}
-
-.sensor-graph {
-  width: 90%;
-  height: 100%;
-  background: transparent;
-  border-radius: 8px;
-  background: #1e1e1e;
-  margin-top: 15px;
-}
-
-.sensor-graph-settings {
-  display: flex;
   gap: 15px;
   align-items: center;
+  margin-top: 10px;
   margin-bottom: 15px;
 }
 
 .sensor-graph-settings select,
 .sensor-graph-settings input {
+  width: 40%;
+  height: 40px;
   padding: 8px 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -54,4 +37,15 @@
 .sensor-graph-settings input:focus {
   outline: none;
   border-color: #522aad;
+}
+
+/* ========================================
+   БЛОК: Сам график
+   ======================================== */
+.sensor-graph {
+  width: 90%;
+  height: 100%;
+  background: #1e1e1e;
+  border-radius: 8px;
+  margin-top: 15px;
 }

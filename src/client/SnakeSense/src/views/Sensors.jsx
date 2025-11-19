@@ -307,7 +307,7 @@ function Sensors() {
                     onChange={(e) =>
                       setSettingsForm({
                         ...settingsForm,
-                        palce: e.target.value || "None",
+                        place: e.target.value || "None",
                       })
                     }
                   />
