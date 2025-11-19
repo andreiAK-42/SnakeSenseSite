@@ -153,18 +153,26 @@ const SensorChart = ({
     };
   }, [selectedParameter, selectedDate, sensorData]);
 
+  if (loading) {
+    return (
+      <div className="sensor-graph-container">
+        <p>Загрузка данных...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="sensor-graph-container">
+        <p style={{ color: "red" }}>Ошибка загрузки данных: {error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="sensor-graph-container">
-      {loading && <p>Загрузка данных...</p>}
-      {error && (
-        <p style={{ color: "red", position: "absolute" }}>{"Ошибка загрузки данных " + error}</p>
-      )}
-
       <div className="sensor-graph">
-        <canvas
-          ref={chartRef}
-          style={{ width: "100%", height: "300px" }}
-        ></canvas>
+        <canvas ref={chartRef} style={{ width: "100%", height: "300px" }}></canvas>
       </div>
     </div>
   );

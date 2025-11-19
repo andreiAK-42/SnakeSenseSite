@@ -1,8 +1,33 @@
 import "./styles/mobile/navigation_bar_mobile.css";
 import "./styles/pc/navigation_bar_pc.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function NavigationBar({ isMenuOpen }) {
+  const location = useLocation();
+
+  const navItems = [
+    {
+      path: "/dashboard",
+      label: "Главная",
+      icon: "./src/views/assets/images/iMac.png",
+    },
+    {
+      path: "/sensors",
+      label: "Датчики",
+      icon: "./src/views/assets/images/Laptop Settings.png",
+    },
+    {
+      path: "/notifications",
+      label: "Уведомления",
+      icon: "./src/views/assets/images/Error.png",
+    },
+    {
+      path: "/api",
+      label: "API",
+      icon: "./src/views/assets/images/Puzzle Matching.png",
+    },
+  ];
+
   return (
     <div className={`menu ${isMenuOpen ? "active" : ""}`}>
       <div className="logo-container">
@@ -11,43 +36,16 @@ function NavigationBar({ isMenuOpen }) {
       </div>
 
       <div className="points-container">
-        <Link
-          to="/dashboard"
-          className={`point ${
-            location.pathname === "/dashboard" ? "active" : ""
-          }`}
-        >
-          <img src="./src/views/assets/images/iMac.png" alt="Главная" />
-          <p>Главная</p>
-        </Link>
-        <Link
-          to="/sensors"
-          className={`point ${
-            location.pathname === "/sensors" ? "active" : ""
-          }`}
-        >
-          <img
-            src="./src/views/assets/images/Laptop Settings.png"
-            alt="Датчики"
-          />
-          <p>Датчики</p>
-        </Link>
-        <div
-          className={`point ${
-            location.pathname === "/notifications" ? "active" : ""
-          }`}
-        >
-          <img src="./src/views/assets/images/Error.png" alt="Уведомления" />
-          <p>Уведомления</p>
-        </div>
-        <div
-          className={`point ${
-            location.pathname === "/notifications" ? "active" : ""
-          }`}
-        >
-          <img src="./src/views/assets/images/Puzzle Matching.png" alt="API" />
-          <p>API</p>
-        </div>
+        {navItems.map((item) => (
+          <Link
+            key={item.path}
+            to={item.path}
+            className={`point ${location.pathname === item.path ? "active" : ""}`}
+          >
+            <img src={item.icon} alt={item.label} />
+            <p>{item.label}</p>
+          </Link>
+        ))}
       </div>
     </div>
   );

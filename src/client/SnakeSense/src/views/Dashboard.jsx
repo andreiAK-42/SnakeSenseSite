@@ -1,82 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./styles/Dashboard_pc.css";
 import "./styles/mobile/Dashboard_mobile.css";
 import NavigationBar from "./components/NavigationBar.jsx";
 import SensorChart from "./components/SensorChart.jsx";
 import ParameterCards from "./components/ParameterCards.jsx";
 import ChartSettings from "./components/ChartSettings.jsx";
+import { useSensorData } from "../hooks/useSensorData";
+import { useMenuToggle } from "../hooks/useMenuToggle";
+import { getTodayDate } from "../utils/formatters";
 
 function Dashboard() {
   const [selectedParameter, setSelectedParameter] = useState("temperature");
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0]
+  const [selectedDate, setSelectedDate] = useState(getTodayDate());
+  const { isMenuOpen } = useMenuToggle();
+  const { sensorData, loading, error } = useSensorData(
+    selectedDate,
+    selectedDate
   );
-  const [sensorData, setSensorData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const menuToggle = document.querySelector(".menu-toggle");
-
-    function closeMenu() {
-      setIsMenuOpen(false);
-    }
-
-    menuToggle.addEventListener("click", (e) => {
-      e.stopPropagation();
-      setIsMenuOpen(!isMenuOpen);
-      menuToggle.style.visibility = "hidden";
-    });
-
-    document.addEventListener("click", (e) => {
-      const menu = document.querySelector(".menu");
-      if (menu && !menu.contains(e.target) && !menuToggle.contains(e.target)) {
-        closeMenu();
-        menuToggle.style.visibility = "";
-      }
-    });
-
-    return () => {};
-  }, []);
-
-  const fetchSensorData = async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      const url = `http://127.0.0.1:3007/api/v1/data?date_start=${selectedDate}&date_end=${selectedDate}`;
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error("Ошибка при получении данных");
-      }
-
-      const result = await response.json();
-      console.log("Данные с сервера:", result);
-
-      if (result.success) {
-        if (result.data.length == 0) {
-          setError(
-            "Не удалось загрузить данные с датчиков. Возможно показаний нет"
-          );
-        } else {
-          setSensorData(result.data);
-        }
-      } else {
-        throw new Error(result.error || "Ошибка в данных сервера");
-      }
-    } catch (err) {
-      setError("Не удалось загрузить данные с датчиков");
-      console.error("Ошибка:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchSensorData();
-  }, [selectedDate]);
 
   const handleParameterChange = (event) => {
     setSelectedParameter(event.target.value);

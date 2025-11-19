@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./styles/Sensors_pc.css";
 import NavigationBar from "./components/NavigationBar.jsx";
+import SensorSettingsDialog from "../components/dialogs/SensorSettingsDialog.jsx";
+import DeleteConfirmDialog from "../components/dialogs/DeleteConfirmDialog.jsx";
+import { fetchSensors, updateSensorSettings, deleteSensor } from "../services/api";
+import { getSensorStatus, formatDate } from "../utils/formatters";
+
+const ORGANIZATION_ID = "690181989755625641265a4f";
 
 function Sensors() {
   const [sensors, setSensors] = useState([]);
@@ -15,27 +21,15 @@ function Sensors() {
     bmp_pressure_add: 0,
     mq_ppm_add: 0,
     bmp_temperature_add: 0,
-    place: "None"
+    place: "None",
   });
 
-  const fetchSensors = async () => {
+  const loadSensors = async () => {
     try {
       setLoading(true);
       setError("");
-      const organizationId = "690181989755625641265a4f";
-      const url = `http://127.0.0.1:3007/api/v1/sensors?organizationId=${organizationId}`;
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error("Ошибка при получении данных");
-      }
-
-      const result = await response.json();
-      if (result.success) {
-        setSensors(result.data || []);
-      } else {
-        throw new Error(result.error || "Ошибка в данных сервера");
-      }
+      const data = await fetchSensors(ORGANIZATION_ID);
+      setSensors(data);
     } catch (err) {
       setError("Не удалось загрузить список датчиков");
       console.error("Ошибка:", err);
@@ -45,36 +39,8 @@ function Sensors() {
   };
 
   useEffect(() => {
-    fetchSensors();
+    loadSensors();
   }, []);
-
-  const getSensorStatus = (lastActivity) => {
-    if (!lastActivity) return { text: "Неизвестно", class: "status-unknown" };
-
-    const lastActivityDate = new Date(lastActivity);
-    const now = new Date();
-    const diffMinutes = (now - lastActivityDate) / (1000 * 60);
-
-    if (diffMinutes < 5) {
-      return { text: "Онлайн", class: "status-online" };
-    } else if (diffMinutes < 60) {
-      return { text: "Недавно", class: "status-recent" };
-    } else {
-      return { text: "Оффлайн", class: "status-offline" };
-    }
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return "Никогда";
-    const date = new Date(dateString);
-    return date.toLocaleString("ru-RU", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   const handleOpenSettings = (sensor) => {
     setSelectedSensor(sensor);
@@ -84,40 +50,18 @@ function Sensors() {
       bmp_pressure_add: sensor.settings?.bmp_pressure_add || 0,
       mq_ppm_add: sensor.settings?.mq_ppm_add || 0,
       bmp_temperature_add: sensor.settings?.bmp_temperature_add || 0,
-      place: sensor.settings?.place || 0,
+      place: sensor.settings?.place || "None",
     });
     setShowSettingsDialog(true);
   };
 
   const handleSaveSettings = async () => {
     try {
-      const response = await fetch(
-        `http://127.0.0.1:3007/api/v1/sensors/${selectedSensor._id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            settings: settingsForm,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Ошибка при сохранении настроек");
-      }
-
-      const result = await response.json();
-      if (result.success) {
-        setShowSettingsDialog(false);
-        fetchSensors();
-      } else {
-        throw new Error(result.error || "Ошибка сохранения");
-      }
+      await updateSensorSettings(selectedSensor._id, settingsForm);
+      setShowSettingsDialog(false);
+      loadSensors();
     } catch (err) {
       alert("Не удалось сохранить настройки: " + err.message);
-      console.error("Ошибка:", err);
     }
   };
 
@@ -128,28 +72,12 @@ function Sensors() {
 
   const handleConfirmDelete = async () => {
     try {
-      const response = await fetch(
-        `http://127.0.0.1:3007/api/v1/sensors/${selectedSensor._id}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Ошибка при удалении датчика");
-      }
-
-      const result = await response.json();
-      if (result.success) {
-        setShowDeleteDialog(false);
-        setSelectedSensor(null);
-        fetchSensors();
-      } else {
-        throw new Error(result.error || "Ошибка удаления");
-      }
+      await deleteSensor(selectedSensor._id);
+      setShowDeleteDialog(false);
+      setSelectedSensor(null);
+      loadSensors();
     } catch (err) {
       alert("Не удалось удалить датчик: " + err.message);
-      console.error("Ошибка:", err);
     }
   };
 
@@ -224,141 +152,21 @@ function Sensors() {
         </table>
 
         {showSettingsDialog && selectedSensor && (
-          <div
-            className="dialog-overlay"
-            onClick={() => setShowSettingsDialog(false)}
-          >
-            <div
-              className="dialog-content"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h2>Настройки датчика: {selectedSensor.name}</h2>
-              <div className="settings-form">
-                <div className="form-group">
-                  <label>DHT Температура (добавка):</label>
-                  <input
-                    type="number"
-                    value={settingsForm.dht_temperature_add}
-                    onChange={(e) =>
-                      setSettingsForm({
-                        ...settingsForm,
-                        dht_temperature_add: parseFloat(e.target.value) || 0,
-                      })
-                    }
-                  />
-                </div>
-                <div className="form-group">
-                  <label>DHT Влажность (добавка):</label>
-                  <input
-                    type="number"
-                    value={settingsForm.dht_humidity_add}
-                    onChange={(e) =>
-                      setSettingsForm({
-                        ...settingsForm,
-                        dht_humidity_add: parseFloat(e.target.value) || 0,
-                      })
-                    }
-                  />
-                </div>
-                <div className="form-group">
-                  <label>BMP Давление (добавка):</label>
-                  <input
-                    type="number"
-                    value={settingsForm.bmp_pressure_add}
-                    onChange={(e) =>
-                      setSettingsForm({
-                        ...settingsForm,
-                        bmp_pressure_add: parseFloat(e.target.value) || 0,
-                      })
-                    }
-                  />
-                </div>
-                <div className="form-group">
-                  <label>MQ PPM (добавка):</label>
-                  <input
-                    type="number"
-                    value={settingsForm.mq_ppm_add}
-                    onChange={(e) =>
-                      setSettingsForm({
-                        ...settingsForm,
-                        mq_ppm_add: parseFloat(e.target.value) || 0,
-                      })
-                    }
-                  />
-                </div>
-                <div className="form-group">
-                  <label>BMP Температура (добавка):</label>
-                  <input
-                    type="number"
-                    value={settingsForm.bmp_temperature_add}
-                    onChange={(e) =>
-                      setSettingsForm({
-                        ...settingsForm,
-                        bmp_temperature_add: parseFloat(e.target.value) || 0,
-                      })
-                    }
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Местоположение:</label>
-                  <input
-                    type="text"
-                    value={settingsForm.place}
-                    onChange={(e) =>
-                      setSettingsForm({
-                        ...settingsForm,
-                        place: e.target.value || "None",
-                      })
-                    }
-                  />
-                </div>
-              </div>
-              <div className="dialog-buttons">
-                <button
-                  className="btn-cancel"
-                  onClick={() => setShowSettingsDialog(false)}
-                >
-                  Отмена
-                </button>
-                <button className="btn-save" onClick={handleSaveSettings}>
-                  Сохранить
-                </button>
-              </div>
-            </div>
-          </div>
+          <SensorSettingsDialog
+            sensor={selectedSensor}
+            settingsForm={settingsForm}
+            onSettingsChange={setSettingsForm}
+            onSave={handleSaveSettings}
+            onCancel={() => setShowSettingsDialog(false)}
+          />
         )}
 
         {showDeleteDialog && selectedSensor && (
-          <div
-            className="dialog-overlay"
-            onClick={() => setShowDeleteDialog(false)}
-          >
-            <div
-              className="dialog-content"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h2>Подтверждение удаления</h2>
-              <p>
-                Вы уверены, что хотите удалить датчик{" "}
-                <strong>{selectedSensor.name}</strong>? Это действие нельзя
-                отменить.
-              </p>
-              <div className="dialog-buttons">
-                <button
-                  className="btn-cancel"
-                  onClick={() => setShowDeleteDialog(false)}
-                >
-                  Отмена
-                </button>
-                <button
-                  className="btn-delete-confirm"
-                  onClick={handleConfirmDelete}
-                >
-                  Удалить
-                </button>
-              </div>
-            </div>
-          </div>
+          <DeleteConfirmDialog
+            sensor={selectedSensor}
+            onConfirm={handleConfirmDelete}
+            onCancel={() => setShowDeleteDialog(false)}
+          />
         )}
       </div>
     </div>
