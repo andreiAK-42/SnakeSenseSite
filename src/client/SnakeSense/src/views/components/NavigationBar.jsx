@@ -20,12 +20,7 @@ function NavigationBar({ isMenuOpen }) {
       path: "/notifications",
       label: "Уведомления",
       icon: "./src/views/assets/images/Error.png",
-    },
-    {
-      path: "/api",
-      label: "API",
-      icon: "./src/views/assets/images/Puzzle Matching.png",
-    },
+    }
   ];
 
   return (

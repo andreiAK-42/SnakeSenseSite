@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
-import "./styles/sensor_chart.css";
+import "./styles/pc/sensor_chart_pc.css";
+import "./styles/mobile/sensor_chart_mobile.css";
 
 const SensorChart = ({
   selectedParameter,

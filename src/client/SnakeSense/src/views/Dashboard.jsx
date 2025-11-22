@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./styles/Dashboard_pc.css";
+import "./styles/pc/Dashboard_pc.css";
 import "./styles/mobile/Dashboard_mobile.css";
 import NavigationBar from "./components/NavigationBar.jsx";
 import SensorChart from "./components/SensorChart.jsx";
@@ -58,8 +58,6 @@ function Dashboard() {
           </div>
 
           <div className="right-container">
-            <p>Местное время 14.12 18:00</p>
-
             <div className="sensor-list-container">
               <p>Датчики в помещении</p>
               <div className="sensor-card-container">

@@ -14,6 +14,7 @@
   h1,
   p {
     margin: 0;
+    color: white;
   }
 
   /* ========================================
@@ -111,7 +112,7 @@
   .sensor-list-container {
     margin-top: 20px;
     width: 90%;
-    height: 33%;
+    height: 240px;
     border: 1px solid #ddd;
     display: flex;
     flex-direction: column;
@@ -139,10 +140,40 @@
      БЛОК: Контейнер списка инцидентов
      ======================================== */
   .report-list-container {
-    margin-top: 22%;
     width: 90%;
     height: 50%;
     border: 1px solid #ddd;
     border-radius: 4px;
+    margin-top: 90px;
+  }
+
+    /* ========================================
+     БЛОК: Настройки графика
+     ======================================== */
+  .sensor-graph-settings {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    padding: 0;
+  }
+
+  .sensor-graph-settings select,
+  .sensor-graph-settings input {
+    width: 100%;
+    height: 45px;
+    padding: 10px 12px;
+    border: 1px solid #555;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #2a2a2a;
+    color: white;
+    box-sizing: border-box;
+  }
+
+  .sensor-graph-settings select:focus,
+  .sensor-graph-settings input:focus {
+    outline: none;
+    border-color: #522aad;
   }
 }

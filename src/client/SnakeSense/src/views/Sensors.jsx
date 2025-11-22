@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./styles/Sensors_pc.css";
+import "./styles/mobile/sensors_mobile.css";
 import NavigationBar from "./components/NavigationBar.jsx";
 import SensorSettingsDialog from "../components/dialogs/SensorSettingsDialog.jsx";
 import DeleteConfirmDialog from "../components/dialogs/DeleteConfirmDialog.jsx";
-import { fetchSensors, updateSensorSettings, deleteSensor } from "../services/api";
+import {
+  fetchSensors,
+  updateSensorSettings,
+  deleteSensor,
+} from "../services/api";
 import { getSensorStatus, formatDate } from "../utils/formatters";
+import { useMenuToggle } from "../hooks/useMenuToggle";
 
 const ORGANIZATION_ID = "690181989755625641265a4f";
 
@@ -12,6 +18,7 @@ function Sensors() {
   const [sensors, setSensors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { isMenuOpen } = useMenuToggle();
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [selectedSensor, setSelectedSensor] = useState(null);
@@ -84,7 +91,10 @@ function Sensors() {
   if (loading) {
     return (
       <div className="body-container">
-        <NavigationBar />
+        <button className="menu-toggle">
+          <img src="src/views/assets/images/Menu.png" alt="Меню" />
+        </button>
+        <NavigationBar isMenuOpen={isMenuOpen} />
         <div className="sensors-container">
           <p>Загрузка...</p>
         </div>
@@ -94,7 +104,10 @@ function Sensors() {
 
   return (
     <div className="body-container">
-      <NavigationBar />
+      <button className="menu-toggle">
+        <img src="src/views/assets/images/Menu.png" alt="Меню" />
+      </button>
+      <NavigationBar isMenuOpen={isMenuOpen} />
       <div className="sensors-container">
         <h1>Датчики</h1>
 
