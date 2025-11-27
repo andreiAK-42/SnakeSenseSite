@@ -119,3 +119,30 @@ export const deleteSensor = async (sensorId) => {
     throw error;
   }
 };
+
+/**
+ * Сохранить или обновить канал уведомлений сотрудника
+ * @param {Object} payload - Данные сотрудника и выбранного канала
+ * @returns {Promise<Object>} Результат сохранения
+ */
+export const saveEmployeeNotificationChannel = async (payload) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/employee-channels`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error("Ошибка при сохранении канала связи");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Ошибка при сохранении канала сотрудника:", error);
+    throw error;
+  }
+};

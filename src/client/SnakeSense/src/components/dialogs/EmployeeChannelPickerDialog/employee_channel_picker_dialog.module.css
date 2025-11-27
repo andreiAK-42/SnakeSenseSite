@@ -1,0 +1,98 @@
+.dialogOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+.dialogContent {
+  background: #1e1e20;
+  border-radius: 12px;
+  padding: 32px;
+  width: min(640px, 92vw);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.dialogHeader h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.dialogHeader p {
+  margin: 8px 0 24px;
+  color: #b9b9bd;
+  font-size: 15px;
+}
+
+.channelGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.channelCard {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #232326;
+  border-radius: 10px;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  text-align: left;
+}
+
+.channelCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.channelIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #0f1112;
+  font-size: 16px;
+}
+
+.channelName {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.channelDescription {
+  color: #9d9da3;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.dialogFooter {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 28px;
+}
+
+.btnCancel {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btnCancel:hover {
+  background: rgba(255, 255, 255, 0.08);
+}

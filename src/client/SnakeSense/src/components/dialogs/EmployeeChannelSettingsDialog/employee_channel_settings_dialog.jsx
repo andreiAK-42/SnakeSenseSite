@@ -1,114 +1,123 @@
 import React from "react";
-import styles from './sensor_settings_dialog.module.css';
+import styles from "./employee_channel_settings_dialog.module.css";
 
 /**
- * Диалог настроек канала связи
+ * Диалог настройки конкретного канала связи
  */
-const EmployeeChannelSettings = ({
-  sensor,
-  settingsForm,
-  onSettingsChange,
+const EmployeeChannelSettingsDialog = ({
+  channel,
+  formValues,
+  onChange,
   onSave,
   onCancel,
+  isSaving = false,
 }) => {
-  const handleInputChange = (field, value) => {
-    onSettingsChange({
-      ...settingsForm,
-      [field]: value,
-    });
+  if (!channel) {
+    return null;
+  }
+
+  const handleInputChange = (field) => (event) => {
+    if (!onChange) {
+      return;
+    }
+    onChange(field, event.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSave();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (onSave) {
+      onSave();
+    }
   };
 
   return (
     <div className={styles.dialogOverlay} onClick={onCancel}>
       <div
         className={styles.dialogContent}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
       >
-        <h2>Канал : {sensor.name}</h2>
+        <div className={styles.dialogHeader}>
+          <span
+            className={styles.channelIcon}
+            style={{ backgroundColor: channel.accentColor }}
+          >
+            {channel.icon || channel.shortName}
+          </span>
+          <div>
+            <h2>{channel.title}</h2>
+            <p>{channel.description}</p>
+          </div>
+        </div>
+
         <form className={styles.settingsForm} onSubmit={handleSubmit}>
-          <div className={styles.formGroup}>
-            <label>DHT Температура (добавка):</label>
-            <input
-              type="number"
-              value={settingsForm.dht_temperature_add}
-              onChange={(e) =>
-                handleInputChange(
-                  "dht_temperature_add",
-                  parseFloat(e.target.value) || 0
-                )
-              }
-            />
+          <div className={styles.section}>
+            <h3>Общие данные</h3>
+            <div className={styles.formGroup}>
+              <label htmlFor="lastName">Фамилия</label>
+              <input
+                id="lastName"
+                type="text"
+                placeholder="Иванов"
+                value={formValues.lastName || ""}
+                onChange={handleInputChange("lastName")}
+                autoFocus
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="firstName">Имя</label>
+              <input
+                id="firstName"
+                type="text"
+                placeholder="Иван"
+                value={formValues.firstName || ""}
+                onChange={handleInputChange("firstName")}
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="position">Должность</label>
+              <input
+                id="position"
+                type="text"
+                placeholder="Дежурный оператор"
+                value={formValues.position || ""}
+                onChange={handleInputChange("position")}
+              />
+            </div>
           </div>
-          <div className={styles.formGroup}>
-            <label>DHT Влажность (добавка):</label>
-            <input
-              type="number"
-              value={settingsForm.dht_humidity_add}
-              onChange={(e) =>
-                handleInputChange(
-                  "dht_humidity_add",
-                  parseFloat(e.target.value) || 0
-                )
-              }
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label>BMP Давление (добавка):</label>
-            <input
-              type="number"
-              value={settingsForm.bmp_pressure_add}
-              onChange={(e) =>
-                handleInputChange(
-                  "bmp_pressure_add",
-                  parseFloat(e.target.value) || 0
-                )
-              }
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label>MQ PPM (добавка):</label>
-            <input
-              type="number"
-              value={settingsForm.mq_ppm_add}
-              onChange={(e) =>
-                handleInputChange("mq_ppm_add", parseFloat(e.target.value) || 0)
-              }
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label>BMP Температура (добавка):</label>
-            <input
-              type="number"
-              value={settingsForm.bmp_temperature_add}
-              onChange={(e) =>
-                handleInputChange(
-                  "bmp_temperature_add",
-                  parseFloat(e.target.value) || 0
-                )
-              }
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label>Местоположение:</label>
-            <input
-              type="text"
-              value={settingsForm.place}
-              onChange={(e) =>
-                handleInputChange("place", e.target.value || "None")
-              }
-            />
-          </div>
+
+          {channel.fields?.length ? (
+            <div className={styles.section}>
+              <h3>Настройки {channel.shortName || channel.title}</h3>
+              {channel.fields.map((field) => (
+                <div className={styles.formGroup} key={field.name}>
+                  <label htmlFor={field.name}>{field.label}</label>
+                  <input
+                    id={field.name}
+                    type={field.type || "text"}
+                    placeholder={field.placeholder}
+                    value={formValues[field.name] || ""}
+                    onChange={handleInputChange(field.name)}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : null}
+
           <div className={styles.dialogButtons}>
-            <button type="button" className={styles.btnCancel} onClick={onCancel}>
+            <button
+              type="button"
+              className={styles.btnCancel}
+              onClick={onCancel}
+              disabled={isSaving}
+            >
               Отмена
             </button>
-            <button type="submit" className={styles.btnSave}>
-              Сохранить
+            <button
+              type="submit"
+              className={styles.btnSave}
+              disabled={isSaving}
+            >
+              {isSaving ? "Сохранение..." : "Сохранить"}
             </button>
           </div>
         </form>
@@ -117,4 +126,4 @@ const EmployeeChannelSettings = ({
   );
 };
 
-export default EmployeeChannelSettings;
+export default EmployeeChannelSettingsDialog;
