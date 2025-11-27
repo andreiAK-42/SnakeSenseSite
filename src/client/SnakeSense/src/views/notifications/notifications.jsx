@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./notifications.module.css";
 import NavigationBar from "../components/NavigationBar/navigation_bar.jsx";
 import { useMenuToggle } from "../../hooks/useMenuToggle.js";
