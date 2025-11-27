@@ -51,14 +51,43 @@ p {
   text-align: start;
 }
 
-.current-place {
+.place-selector {
   margin-top: 20px;
-  margin-bottom: 10px;
-  font-size: 32px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.selector-label {
+  font-size: 28px;
   font-family: "Ubuntu";
-  font-weight: 100;
-  color: white;
-  text-align: start;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.selector-hint {
+  display: block;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 6px;
+}
+
+.place-select {
+  min-width: 260px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: #1f1f22;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.place-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .left-container p {
@@ -86,28 +115,100 @@ p {
 .sensor-list-container {
   margin-top: 20px;
   width: 90%;
-  height: 240px;
-  border: 1px solid #ddd;
+  min-height: 260px;
+  background-color: #1e1e20;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  border-radius: 4px;
 }
 
-.sensor-card-container {
-  width: 90%;
+.sensor-list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 40px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  margin-bottom: 16px;
 }
 
-.sensor-card-container img {
-  width: 30px;
-  height: 30px;
-  margin: 10px;
+.sensor-list-header p {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.selected-place-name {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.sensor-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  max-height: 360px;
+  padding-right: 6px;
+}
+
+.sensor-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background-color: #252529;
+}
+
+.sensor-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.sensor-info img {
+  width: 40px;
+  height: 40px;
+}
+
+.sensor-info span {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.sensor-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sensor-status img {
+  width: 18px;
+  height: 18px;
+}
+
+.status-online {
+  color: #68d391;
+  font-weight: 500;
+}
+
+.status-offline {
+  color: #f56565;
+  font-weight: 500;
+}
+
+.placeholder-text {
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+.error-message {
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background-color: rgba(235, 87, 87, 0.15);
+  color: #ff9b9b;
+  font-size: 14px;
 }
 
 /* ========================================
