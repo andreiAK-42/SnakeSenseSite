@@ -1,4 +1,5 @@
 import React from "react";
+import styles from './sensor_settings_dialog.module.css';
 
 /**
  * Диалог настроек датчика
@@ -23,14 +24,14 @@ const SensorSettingsDialog = ({
   };
 
   return (
-    <div className="dialog-overlay" onClick={onCancel}>
+    <div className={styles.dialogOverlay} onClick={onCancel}>
       <div
-        className="dialog-content"
+        className={styles.dialogContent}
         onClick={(e) => e.stopPropagation()}
       >
         <h2>Настройки датчика: {sensor.name}</h2>
-        <form className="settings-form" onSubmit={handleSubmit}>
-          <div className="form-group">
+        <form className={styles.settingsForm} onSubmit={handleSubmit}>
+          <div className={styles.formGroup}>
             <label>DHT Температура (добавка):</label>
             <input
               type="number"
@@ -43,7 +44,7 @@ const SensorSettingsDialog = ({
               }
             />
           </div>
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>DHT Влажность (добавка):</label>
             <input
               type="number"
@@ -56,7 +57,7 @@ const SensorSettingsDialog = ({
               }
             />
           </div>
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>BMP Давление (добавка):</label>
             <input
               type="number"
@@ -69,7 +70,7 @@ const SensorSettingsDialog = ({
               }
             />
           </div>
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>MQ PPM (добавка):</label>
             <input
               type="number"
@@ -79,7 +80,7 @@ const SensorSettingsDialog = ({
               }
             />
           </div>
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>BMP Температура (добавка):</label>
             <input
               type="number"
@@ -92,7 +93,7 @@ const SensorSettingsDialog = ({
               }
             />
           </div>
-          <div className="form-group">
+          <div className={styles.formGroup}>
             <label>Местоположение:</label>
             <input
               type="text"
@@ -102,11 +103,11 @@ const SensorSettingsDialog = ({
               }
             />
           </div>
-          <div className="dialog-buttons">
-            <button type="button" className="btn-cancel" onClick={onCancel}>
+          <div className={styles.dialogButtons}>
+            <button type="button" className={styles.btnCancel} onClick={onCancel}>
               Отмена
             </button>
-            <button type="submit" className="btn-save">
+            <button type="submit" className={styles.btnSave}>
               Сохранить
             </button>
           </div>

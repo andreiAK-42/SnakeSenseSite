@@ -1,18 +1,19 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Dashboard from './views/Dashboard.jsx'
-import Sensors from './views/Sensors.jsx'
-import Notification from './views/Notification.jsx'
+import Dashboard from './views/dashboard/dashboard.jsx'
+import Sensors from './views/sensors/sensors.jsx'
+import Notifications from './views/notifications/notifications.jsx'
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/sensors" element={<Sensors />} />
-        <Route path="/notification" element={<Notification />} />
+        <Route path="/notifications" element={<Notifications />} />
       </Routes>
-    </Router> 
-  )
+    </Router>
+  );
 }
 
 export default App

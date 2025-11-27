@@ -12,33 +12,7 @@
     align-items: center;
   }
 
-  /* ========================================
-   БЛОК: Настройки графика
-   ======================================== */
-  .sensor-graph-settings {
-    width: 100%;
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 15px;
-  }
-
-  .sensor-graph-settings select,
-  .sensor-graph-settings input {
-    width: 40%;
-    height: 40px;
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-
-  .sensor-graph-settings select:focus,
-  .sensor-graph-settings input:focus {
-    outline: none;
-    border-color: #522aad;
-  }
+ 
 
   /* ========================================
    БЛОК: Сам график

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import "./styles/pc/Dashboard_pc.css";
-import "./styles/mobile/Dashboard_mobile.css";
-import NavigationBar from "./components/NavigationBar.jsx";
-import SensorChart from "./components/SensorChart.jsx";
-import ParameterCards from "./components/ParameterCards.jsx";
-import ChartSettings from "./components/ChartSettings.jsx";
-import { useSensorData } from "../hooks/useSensorData";
-import { useMenuToggle } from "../hooks/useMenuToggle";
-import { getTodayDate } from "../utils/formatters";
+import styles from './dashboard.module.css';
+import NavigationBar from "../components/NavigationBar/navigation_bar.jsx";
+import SensorChart from "../components/SensorChart.jsx";
+import ParameterCards from "../components/ParametersCards/parameter_cards.jsx";
+import ChartSettings from "../components/ChartSettings/chart_settings.jsx";
+import { useSensorData } from "../../hooks/useSensorData.js";
+import { useMenuToggle } from "../../hooks/useMenuToggle.js";
+import { getTodayDate } from "../../utils/formatters.js";
+import { getSensorStatus } from "../../utils/formatters.js";
 
 function Dashboard() {
   const [selectedParameter, setSelectedParameter] = useState("temperature");
@@ -28,16 +28,15 @@ function Dashboard() {
 
   return (
     <>
-      <div className="body-container">
-        <button className="menu-toggle">
+      <div className={styles.bodyContainer}>
+        <button className={styles.menuToggle}>
           <img src="src/views/assets/images/Menu.png" alt="Меню" />
         </button>
         <NavigationBar isMenuOpen={isMenuOpen} />
 
-        <div className="dashboard">
-          <div className="left-container">
-            <h1>Здравствуйте, Андрей</h1>
-            <p>Общежитие, комната 525</p>
+        <div className={styles.dashboard}>
+          <div className={styles.leftContainer}>
+            <p className={styles.currentPlace}>Общежитие, комната 525</p>
 
             <ParameterCards sensorData={sensorData} />
 
@@ -57,24 +56,27 @@ function Dashboard() {
             />
           </div>
 
-          <div className="right-container">
-            <div className="sensor-list-container">
+          <div className={styles.rightContainer}>
+            <div className={styles.sensorListContainer}>
               <p>Датчики в помещении</p>
-              <div className="sensor-card-container">
+              <div className={styles.sensorCardContainer}>
                 <img
                   src="src/views/assets/images/RFID Signal.png"
                   alt="Датчик"
                 />
                 <p>Вояджер 1</p>
-                <img
-                  src="src/views/assets/images/Status Online.png"
-                  alt="Статус"
-                />
+                {status.text == "Оффлайн" ? (
+                  <img
+                    src="src/views/assets/images/Status Offline.png"
+                    alt="Статус: Оффлайн"
+                  />
+                ) : (
+                  <img
+                    src="src/views/assets/images/Status Online.png"
+                    alt="Статус: Онлайн"
+                  />
+                )}
               </div>
-            </div>
-
-            <div className="report-list-container">
-              <p>Инциденты</p>
             </div>
           </div>
         </div>

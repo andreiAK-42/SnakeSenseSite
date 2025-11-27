@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import "./styles/Sensors_pc.css";
-import "./styles/mobile/sensors_mobile.css";
-import NavigationBar from "./components/NavigationBar.jsx";
-import SensorSettingsDialog from "../components/dialogs/SensorSettingsDialog.jsx";
-import DeleteConfirmDialog from "../components/dialogs/DeleteConfirmDialog.jsx";
+import styles from './sensors.module.css';
+import NavigationBar from "../components/NavigationBar/navigation_bar.jsx";
+import SensorSettingsDialog from "../../components/dialogs/SensorSettingsDialog/sensor_settings_dialog.jsx";
+import DeleteConfirmDialog from "../../components/dialogs/DeleteConfirmDialog/delete_confirm_dialog.jsx";
 import {
   fetchSensors,
   updateSensorSettings,
   deleteSensor,
-} from "../services/api";
-import { getSensorStatus, formatDate } from "../utils/formatters";
-import { useMenuToggle } from "../hooks/useMenuToggle";
+} from "../../services/api.js";
+import { getSensorStatus, formatDate } from "../../utils/formatters.js";
+import { useMenuToggle } from "../../hooks/useMenuToggle.js";
 
 const ORGANIZATION_ID = "690181989755625641265a4f";
 
@@ -90,12 +89,12 @@ function Sensors() {
 
   if (loading) {
     return (
-      <div className="body-container">
-        <button className="menu-toggle">
+      <div className={styles.bodyContainer}>
+        <button className={styles.menuToggle}>
           <img src="src/views/assets/images/Menu.png" alt="Меню" />
         </button>
         <NavigationBar isMenuOpen={isMenuOpen} />
-        <div className="sensors-container">
+        <div className={styles.sensorsContainer}>
           <p>Загрузка...</p>
         </div>
       </div>
@@ -103,17 +102,17 @@ function Sensors() {
   }
 
   return (
-    <div className="body-container">
-      <button className="menu-toggle">
+    <div className={styles.bodyContainer}>
+      <button className={styles.menuToggle}>
         <img src="src/views/assets/images/Menu.png" alt="Меню" />
       </button>
       <NavigationBar isMenuOpen={isMenuOpen} />
-      <div className="sensors-container">
+      <div className={styles.sensorsContainer}>
         <h1>Датчики</h1>
 
-        {error && <p className="error-message">{error}</p>}
+        {error && <p className={styles.errorMessage}>{error}</p>}
 
-        <table className="sensors-table">
+        <table className={styles.sensorsTable}>
           <thead>
             <tr>
               <th>Название</th>
@@ -126,7 +125,7 @@ function Sensors() {
           <tbody>
             {sensors.length === 0 ? (
               <tr>
-                <td colSpan="5" className="empty-message">
+                <td colSpan="5" className={styles.emptyMessage}>
                   Нет доступных датчиков
                 </td>
               </tr>
@@ -138,20 +137,20 @@ function Sensors() {
                     <td>{sensor.name || "Без названия"}</td>
                     <td>{sensor.settings.place || "Не указано"}</td>
                     <td>
-                      <span className={`status-badge ${status.class}`}>
+                      <span className={`${styles.statusBadge} ${status.class}`}>
                         {status.text}
                       </span>
                     </td>
                     <td>{formatDate(sensor.last_activity)}</td>
-                    <td className="actions-cell">
+                    <td className={styles.actionsCell}>
                       <button
-                        className="btn-settings"
+                        className={styles.btnSettings}
                         onClick={() => handleOpenSettings(sensor)}
                       >
                         Настройка
                       </button>
                       <button
-                        className="btn-delete"
+                        className={styles.btnDelete}
                         onClick={() => handleOpenDelete(sensor)}
                       >
                         Удалить

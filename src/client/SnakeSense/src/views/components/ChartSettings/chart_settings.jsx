@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './chart_settings.module.css';
 
 const ChartSettings = ({ 
   selectedParameter, 
@@ -7,7 +8,7 @@ const ChartSettings = ({
   onDateChange 
 }) => {
   return (
-    <div className='sensor-graph-settings'>
+    <div className={styles.sensorGraphSettings}>
       <select 
         name="parameter" 
         id="parameter-select"

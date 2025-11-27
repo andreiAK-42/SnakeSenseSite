@@ -21,7 +21,6 @@ app.post("/api/v1/data", database_route.addSensorMeasurements);
 app.get("/api/v1/data", database_route.getSensorMeasurements);
 app.get("/api/v1/sensors", database_route.getAllOrganizationSensors);
 app.put("/api/v1/sensors/:id", database_route.updateSensor);
-app.delete("/api/v1/sensors/:id", database_route.deleteSensor);
 
 app.get("/api/v1/employees", employee_route.getEmployees);
 app.get("/api/v1/employees/:id", employee_route.getEmployeeById);

@@ -1,5 +1,4 @@
-import "./styles/mobile/navigation_bar_mobile.css";
-import "./styles/pc/navigation_bar_pc.css";
+import styles from "./navigation_bar.module.css";
 import { Link, useLocation } from "react-router-dom";
 
 function NavigationBar({ isMenuOpen }) {
@@ -24,18 +23,18 @@ function NavigationBar({ isMenuOpen }) {
   ];
 
   return (
-    <div className={`menu ${isMenuOpen ? "active" : ""}`}>
-      <div className="logo-container">
+    <div className={`${styles.menu} ${isMenuOpen ? "active" : ""}`}>
+      <div className={styles.logoContainer}>
         <img src="./src/views/assets/images/Rattlesnake.png" alt="Logo" />
         <p>Snake Sense</p>
       </div>
 
-      <div className="points-container">
+      <div className={styles.pointsContainer}>
         {navItems.map((item) => (
           <Link
             key={item.path}
             to={item.path}
-            className={`point ${location.pathname === item.path ? "active" : ""}`}
+            className={`${styles.point} ${location.pathname === item.path ? styles.pointActive : ""}`}
           >
             <img src={item.icon} alt={item.label} />
             <p>{item.label}</p>
