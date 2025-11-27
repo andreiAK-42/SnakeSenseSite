@@ -5,6 +5,8 @@ import { useMenuToggle } from "../../hooks/useMenuToggle.js";
 
 function Notifications() {
   const { isMenuOpen } = useMenuToggle();
+  const [showEmployeeChannelSettingsDialog, setShowDeleteDialog] = useState(false);
+
   return (
     <>
       <div className={styles.bodyContainer}>
