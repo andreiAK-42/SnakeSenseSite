@@ -17,9 +17,9 @@ class SensorService {
       const MONGODB_URI = process.env.MONGODB_URI;
       await mongoose.connect(MONGODB_URI);
       this.isConnected = true;
-      console.log("✅ MongoDB connected in SensorService");
+      console.log("✅ MongoDB");
     } catch (error) {
-      console.error("❌ MongoDB connection error in SensorService:", error);
+      console.error("❌ MongoDB. Ошибка подключения", error);
       throw error;
     }
   }
@@ -30,8 +30,7 @@ class SensorService {
     dhtHumidity,
     bmpTemperature,
     bmpPressure,
-    mqPPM,
-    mqBadData
+    mq_au
   ) {
     try {
       await this.connect();
@@ -43,8 +42,7 @@ class SensorService {
           dht_humidity: dhtHumidity,
           bmp_temperature: bmpTemperature,
           bmp_pressure: bmpPressure,
-          mq_ppm: mqPPM,
-          mq_bad_data: mqBadData,
+          mq_au: mq_au,
         },
       });
 
@@ -56,8 +54,7 @@ class SensorService {
 
       return measurement;
     } catch (error) {
-      console.error("❌ Error in addMeasurement:", error);
-      throw new Error(`Ошибка сохранения измерения: ${error.message}`);
+      console.error("❌ Ошибка добавления замеров: ", error);
     }
   }
 
@@ -65,16 +62,17 @@ class SensorService {
     try {
       await this.connect();
       const sensor = await Sensor.findOne({ _id: sensorId });
+
       if (!sensor) {
-        throw new Error("Сенсор не найден");
+        console.error("❌ Неизвестный датчик: " + sensorId);
       }
 
       const startOfDay = new Date(date_start);
-      startOfDay.setHours(0, 0, 0, 0); // 00:00:00.000
+      startOfDay.setHours(0, 0, 0, 0);
 
       const endOfDay = new Date(date_end);
-      endOfDay.setDate(endOfDay.getDate() + 1); // Следующий день
-      endOfDay.setHours(0, 0, 0, 0); // 00:00:00.000 следующего дня
+      endOfDay.setDate(endOfDay.getDate() + 1);
+      endOfDay.setHours(0, 0, 0, 0);
 
       const measurements = await Measurement.find(
         {
@@ -86,8 +84,7 @@ class SensorService {
 
       return measurements;
     } catch (error) {
-      console.error("❌ Error in getMeasurement:", error);
-      throw new Error(`Ошибка получения измерений: ${error.message}`);
+      console.error("❌ Ошибка получения замеров: ", error);
     }
   }
 
@@ -100,21 +97,54 @@ class SensorService {
 
       return sensor;
     } catch (error) {
-      console.error("❌ Error in findSensorByIdAndPassword:", error);
-      throw new Error(`Ошибка поиска датчика: ${error.message}`);
+      console.error("❌ Ошибка получения датчика по логину и паролю: ", error);
     }
   }
 
   async getAllOrganizationSensors(organizationId) {
     try {
+      await this.connect();
       const sonsors = await Sensor.find({
-        organization: new mongoose.Schema.Types.ObjectId(organizationId),
+        organization: new mongoose.Types.ObjectId(organizationId),
       });
 
       return sonsors;
     } catch (error) {
-      console.error("❌ Error in findSensorByIdAndPassword:", error);
-      throw new Error(`Ошибка поиска датчика: ${error.message}`);
+      console.error("❌ Ошибка получения датчиков организации: ", error);
+    }
+  }
+
+  async updateSensor(sensorId, updateData) {
+    try {
+      await this.connect();
+      const sensor = await Sensor.findByIdAndUpdate(
+        sensorId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+      );
+
+      if (!sensor) {
+        onsole.error("❌ Датчик не найден: ", sensorId);
+      }
+
+      return sensor;
+    } catch (error) {
+      console.error("❌ Ошибка обновления настроек датчика: ", error);
+    }
+  }
+
+  async deleteSensor(sensorId) {
+    try {
+      await this.connect();
+      const sensor = await Sensor.findByIdAndDelete(sensorId);
+
+      if (!sensor) {
+        onsole.error("❌ Датчик не найден: ", sensorId);
+      }
+
+      return sensor;
+    } catch (error) {
+      console.error("❌ Ошибка удаления датчика:", error);
     }
   }
 }

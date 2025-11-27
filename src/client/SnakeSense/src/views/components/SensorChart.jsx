@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
-import "./styles/sensor_chart.css";
+import "./styles/pc/sensor_chart_pc.css";
+import "./styles/mobile/sensor_chart_mobile.css";
 
 const SensorChart = ({
   selectedParameter,
@@ -40,7 +41,7 @@ const SensorChart = ({
       },
       bad_ppm: {
         label: "Концентрация газов - аналог (ppm)",
-        data: sortedData.map((item) => item.data.mq_bad_data),
+        data: sortedData.map((item) => item.data.mq_au),
         color: "rgb(153, 102, 255)",
         backgroundColor: "rgba(153, 102, 255, 0.2)",
       },
@@ -153,18 +154,26 @@ const SensorChart = ({
     };
   }, [selectedParameter, selectedDate, sensorData]);
 
+  if (loading) {
+    return (
+      <div className="sensor-graph-container">
+        <p>Загрузка данных...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="sensor-graph-container">
+        <p style={{ color: "red" }}>Ошибка загрузки данных: {error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="sensor-graph-container">
-      {loading && <p>Загрузка данных...</p>}
-      {error && (
-        <p style={{ color: "red" }}>{"Ошибка загрузки данных " + error}</p>
-      )}
-
       <div className="sensor-graph">
-        <canvas
-          ref={chartRef}
-          style={{ width: "100%", height: "300px" }}
-        ></canvas>
+        <canvas ref={chartRef} style={{ width: "100%", height: "300px" }}></canvas>
       </div>
     </div>
   );

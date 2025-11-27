@@ -1,0 +1,36 @@
+/* ========================================
+   БЛОК: Настройки графика
+   ======================================== */
+.sensor-graph-settings {
+  width: 90%;
+  height: 58px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.sensor-graph-settings select {
+  width: 45%;
+  height: 58px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.sensor-graph-settings input {
+  width: 45%;
+  height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.sensor-graph-settings select:focus,
+.sensor-graph-settings input:focus {
+  outline: none;
+  border-color: #522aad;
+}

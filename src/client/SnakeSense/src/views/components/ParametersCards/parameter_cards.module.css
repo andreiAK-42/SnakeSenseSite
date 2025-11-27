@@ -1,0 +1,41 @@
+/* ========================================
+     БЛОК: Контейнер карточек текущих параметров
+     ======================================== */
+.current-parameter-cards-container {
+  width: 90%;
+  height: 182px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.current-parameters-container p {
+  margin: 0;
+  font-size: 10px;
+  text-align: center;
+}
+
+.card-icon-and-parameter {
+  display: flex;
+  align-items: start;
+  width: 100%;
+}
+
+.card-icon-and-parameter p {
+  font-size: 28px;
+}
+
+.current-parameter-card p {
+  text-align: center;
+}
+
+.current-parameter-card {
+  flex-basis: 180px;
+  flex-grow: inherit;
+  height: 170px;
+  background-color: #b89432;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+}
